@@ -1,20 +1,13 @@
 package csv
 
 import (
+	"CSVPgen/internal/types"
 	"encoding/csv"
+	"fmt"
 	"os"
 )
 
-type StructField struct {
-	Name  string
-	Value string
-}
-
-type Row struct {
-	Fields []StructField
-}
-
-func ReadCSV(file *os.File, columnProcessors ColumnProcessorMap, headerRow int) ([]string, []Row, error) {
+func ReadCSV(file *os.File, headerRow int) ([]string, []types.Row, error) {
 	defer file.Close()
 
 	reader := csv.NewReader(file)
@@ -23,12 +16,20 @@ func ReadCSV(file *os.File, columnProcessors ColumnProcessorMap, headerRow int) 
 		return nil, nil, err
 	}
 
+	if headerRow >= len(rows) {
+		return nil, nil, fmt.Errorf("headerRow out of range")
+	}
+
 	columnNames := rows[headerRow]
 
-	var processedRows []Row
+	var processedRows []types.Row
 
 	for _, row := range rows[headerRow+1:] {
-		processedRows = append(processedRows, ProcessRow(row, columnNames, columnProcessors))
+		var fields []types.StructField
+		for i, value := range row {
+			fields = append(fields, types.StructField{Name: columnNames[i], Value: value})
+		}
+		processedRows = append(processedRows, types.Row{Fields: fields})
 	}
 
 	return columnNames, processedRows, nil

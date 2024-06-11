@@ -2,7 +2,9 @@ package main
 
 import (
 	CSVPgen "CSVPgen/internal/csv"
-	Processors "CSVPgen/internal/processors"
+	Processor "CSVPgen/internal/processor"
+	Processors "CSVPgen/internal/processor/processors"
+
 	"fmt"
 )
 
@@ -15,11 +17,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	columnProcessors := CSVPgen.ColumnProcessorMap{
-		"Scan Rate": Processors.DivisorProcessor{Divisor: 2},
-	}
-
-	columnNames, processedRows, err := CSVPgen.ReadCSV(file, columnProcessors, 0)
+	columnNames, rows, err := CSVPgen.ReadCSV(file, 0)
 
 	outputFilePath := "data/output/data_test_processed.csv"
 	outputFile, err := CSVPgen.CreateCSV(outputFilePath)
@@ -28,6 +26,12 @@ func main() {
 		fmt.Println("Error creando archivo de salida: ", err)
 		return
 	}
+
+	columnProcessors := Processor.ColumnProcessorMap{
+		"Scan Rate": Processors.DivisorProcessor{Divisor: 2},
+	}
+
+	processedRows, err := Processor.ProcessRows(columnNames, rows, columnProcessors)
 
 	if err := CSVPgen.WriteCSV(outputFile, processedRows, columnNames); err != nil {
 		fmt.Println("Error escribiendo archivo CSV:", err)

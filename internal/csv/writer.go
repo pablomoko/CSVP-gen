@@ -1,11 +1,12 @@
 package csv
 
 import (
+	"CSVPgen/internal/types"
 	"encoding/csv"
 	"os"
 )
 
-func WriteCSV(file *os.File, rows []Row, columnNames []string) error {
+func WriteCSV(file *os.File, rows []types.Row, columnNames []string) error {
 	defer file.Close()
 
 	writer := csv.NewWriter(file)
