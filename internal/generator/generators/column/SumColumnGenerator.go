@@ -1,4 +1,4 @@
-package generators
+package column
 
 import (
 	"CSVPgen/internal/types"

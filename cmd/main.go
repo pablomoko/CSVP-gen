@@ -3,7 +3,8 @@ package main
 import (
 	CSVPgen "CSVPgen/internal/csv"
 	Generator "CSVPgen/internal/generator"
-	Generators "CSVPgen/internal/generator/generators"
+	ColGenerators "CSVPgen/internal/generator/generators/column"
+	MetaDataGenerator "CSVPgen/internal/generator/generators/metadata"
 	Processor "CSVPgen/internal/processor"
 	Processors "CSVPgen/internal/processor/processors"
 	"CSVPgen/internal/types"
@@ -63,7 +64,7 @@ func test1() {
 
 	_, rows, err := CSVPgen.ReadCSV(file, 0)
 
-	sumGenerator := &Generators.SumColumnGenerator{
+	sumGenerator := &ColGenerators.SumColumnGenerator{
 		SourceColumns: []string{"Age", "Dog's Age"}, // Definir las columnas de origen para la suma
 		NewColumnName: "SumColumn",                  // Definir el nombre de la nueva columna
 	}
@@ -74,7 +75,7 @@ func test1() {
 		NumColumns: 0,
 	}
 
-	metadataGenerator := &Generators.MetadataGenerator{
+	metadataGenerator := &MetaDataGenerator.MetadataGenerator{
 		Metadata: metadata,
 	}
 

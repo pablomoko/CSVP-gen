@@ -1,4 +1,4 @@
-package generators
+package metadata
 
 import "CSVPgen/internal/types"
 
