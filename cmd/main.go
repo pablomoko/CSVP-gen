@@ -6,6 +6,7 @@ import (
 	Generators "CSVPgen/internal/generator/generators"
 	Processor "CSVPgen/internal/processor"
 	Processors "CSVPgen/internal/processor/processors"
+	"CSVPgen/internal/types"
 
 	"fmt"
 )
@@ -27,7 +28,13 @@ func main() {
 
 	processedRows, err := Processor.ProcessRows(rows, columnProcessors)
 
-	outputFilePath := "data/output/data_test_processed_1.csv"
+	metadata := &types.CSVMetadata{
+		FileName:   "test_metadata_1",
+		NumRows:    0,
+		NumColumns: 0,
+	}
+
+	outputFilePath := "data/output/" + metadata.FileName + ".csv"
 	outputFile, err := CSVPgen.CreateCSV(outputFilePath)
 
 	if err != nil {
@@ -61,14 +68,24 @@ func test1() {
 		NewColumnName: "SumColumn",                  // Definir el nombre de la nueva columna
 	}
 
-	// Crear un mapa de generadores de columnas
+	metadata := &types.CSVMetadata{
+		FileName:   "test_metadata_2",
+		NumRows:    0,
+		NumColumns: 0,
+	}
+
+	metadataGenerator := &Generators.MetadataGenerator{
+		Metadata: metadata,
+	}
+
 	columnGenerators := Generator.ColumnGeneratorMap{
-		"SumColumn": sumGenerator, // Agregar el generador de suma al mapa
+		"SumColumn": sumGenerator,
+		"Metadata":  metadataGenerator, // Agregar el generador de metadatos al mapa
 	}
 
 	finalRows, err := Generator.ProcessRowsWithGenerators(rows, columnGenerators)
 
-	outputFilePath := "data/output/data_test_processed_2.csv"
+	outputFilePath := "data/output/" + metadata.FileName + ".csv"
 	outputFile, err := CSVPgen.CreateCSV(outputFilePath)
 
 	if err := CSVPgen.WriteCSV(outputFile, finalRows); err != nil {
