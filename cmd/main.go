@@ -25,7 +25,7 @@ func main() {
 		"Scan Rate": Processors.DivisorProcessor{Divisor: 2},
 	}
 
-	processedRows, err := Processor.ProcessRows(columnNames, rows, columnProcessors)
+	processedRows, err := Processor.ProcessRows(rows, columnProcessors)
 
 	outputFilePath := "data/output/data_test_processed.csv"
 	outputFile, err := CSVPgen.CreateCSV(outputFilePath)

@@ -9,11 +9,10 @@ type ColumnProcessor interface {
 }
 type ColumnProcessorMap map[string]ColumnProcessor
 
-func ProcessRow(row types.Row, columnNames []string, columnProcessors ColumnProcessorMap) types.Row {
+func ProcessRow(row types.Row, columnProcessors ColumnProcessorMap) types.Row {
 	var fields []types.StructField
-	for i, value := range row.Fields {
-		fieldName := columnNames[i]
-		processor, ok := columnProcessors[fieldName]
+	for _, value := range row.Fields {
+		processor, ok := columnProcessors[value.Name]
 		if ok {
 			value.Value = processor.Process(value.Value)
 		}
@@ -22,11 +21,11 @@ func ProcessRow(row types.Row, columnNames []string, columnProcessors ColumnProc
 	return types.Row{Fields: fields}
 }
 
-func ProcessRows(columnNames []string, rows []types.Row, columnProcessors ColumnProcessorMap) ([]types.Row, error) {
+func ProcessRows(rows []types.Row, columnProcessors ColumnProcessorMap) ([]types.Row, error) {
 	var processedRows []types.Row
 
 	for _, row := range rows {
-		processedRows = append(processedRows, ProcessRow(row, columnNames, columnProcessors))
+		processedRows = append(processedRows, ProcessRow(row, columnProcessors))
 	}
 
 	return processedRows, nil
