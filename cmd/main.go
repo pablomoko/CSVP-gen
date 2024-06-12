@@ -19,7 +19,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	columnNames, rows, err := CSVPgen.ReadCSV(file, 0)
+	_, rows, err := CSVPgen.ReadCSV(file, 0)
 
 	columnProcessors := Processor.ColumnProcessorMap{
 		"Scan Rate": Processors.DivisorProcessor{Divisor: 2},
@@ -35,7 +35,7 @@ func main() {
 		return
 	}
 
-	if err := CSVPgen.WriteCSV(outputFile, processedRows, columnNames); err != nil {
+	if err := CSVPgen.WriteCSV(outputFile, processedRows); err != nil {
 		fmt.Println("Error escribiendo archivo CSV:", err)
 		return
 	}
@@ -68,6 +68,12 @@ func test1() {
 
 	finalRows, err := Generator.ProcessRowsWithGenerators(rows, columnGenerators)
 
-	fmt.Println(finalRows)
+	outputFilePath := "data/output/data_test_processed_2.csv"
+	outputFile, err := CSVPgen.CreateCSV(outputFilePath)
+
+	if err := CSVPgen.WriteCSV(outputFile, finalRows); err != nil {
+		fmt.Println("Error escribiendo archivo CSV:", err)
+		return
+	}
 
 }
