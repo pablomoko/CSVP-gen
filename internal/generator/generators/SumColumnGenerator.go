@@ -17,7 +17,7 @@ func (g *SumColumnGenerator) Generate(row types.Row) ([]types.StructField, error
 		found := false
 		for _, field := range row.Fields {
 			if field.Name == col {
-				value, err := strconv.ParseFloat(field.Value, 64)
+				value, err := strconv.ParseFloat(field.Value, 32)
 				if err != nil {
 					return nil, fmt.Errorf("error converting value to float: %v", err)
 				}
