@@ -22,12 +22,12 @@ func main() {
 	_, rows, err := CSVPgen.ReadCSV(file, 0)
 
 	columnProcessors := Processor.ColumnProcessorMap{
-		"Scan Rate": Processors.DivisorProcessor{Divisor: 2},
+		"Age": Processors.DivisorProcessor{Divisor: 2},
 	}
 
 	processedRows, err := Processor.ProcessRows(rows, columnProcessors)
 
-	outputFilePath := "data/output/data_test_processed.csv"
+	outputFilePath := "data/output/data_test_processed_1.csv"
 	outputFile, err := CSVPgen.CreateCSV(outputFilePath)
 
 	if err != nil {
@@ -47,7 +47,7 @@ func main() {
 }
 
 func test1() {
-	filePath := "data/input/data_test_2.csv"
+	filePath := "data/input/data_test.csv"
 	file, err := CSVPgen.OpenCSV(filePath)
 
 	if err != nil {
@@ -57,8 +57,8 @@ func test1() {
 	_, rows, err := CSVPgen.ReadCSV(file, 0)
 
 	sumGenerator := &Generators.SumColumnGenerator{
-		SourceColumns: []string{"Scan Rate", "Address"}, // Definir las columnas de origen para la suma
-		NewColumnName: "SumColumn",                      // Definir el nombre de la nueva columna
+		SourceColumns: []string{"Age", "Dog's Age"}, // Definir las columnas de origen para la suma
+		NewColumnName: "SumColumn",                  // Definir el nombre de la nueva columna
 	}
 
 	// Crear un mapa de generadores de columnas
