@@ -54,7 +54,7 @@ func test1() {
 		fmt.Println(err)
 	}
 
-	columnNames, rows, err := CSVPgen.ReadCSV(file, 0)
+	_, rows, err := CSVPgen.ReadCSV(file, 0)
 
 	sumGenerator := &Generators.SumColumnGenerator{
 		SourceColumns: []string{"Scan Rate", "Address"}, // Definir las columnas de origen para la suma
@@ -66,7 +66,7 @@ func test1() {
 		"SumColumn": sumGenerator, // Agregar el generador de suma al mapa
 	}
 
-	finalRows, err := Generator.ProcessRowsWithGenerators(columnNames, rows, columnGenerators)
+	finalRows, err := Generator.ProcessRowsWithGenerators(rows, columnGenerators)
 
 	fmt.Println(finalRows)
 

@@ -11,7 +11,7 @@ type SumColumnGenerator struct {
 	NewColumnName string
 }
 
-func (g *SumColumnGenerator) Generate(row types.Row, columnNames []string) ([]types.StructField, error) {
+func (g *SumColumnGenerator) Generate(row types.Row) ([]types.StructField, error) {
 	sum := 0.0
 	for _, col := range g.SourceColumns {
 		found := false

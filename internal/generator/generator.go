@@ -5,17 +5,17 @@ import (
 )
 
 type ColumnGenerator interface {
-	Generate(row types.Row, columnNames []string) ([]types.StructField, error)
+	Generate(row types.Row) ([]types.StructField, error)
 }
 
 type ColumnGeneratorMap map[string]ColumnGenerator
 
-func ProcessRowsWithGenerators(columnNames []string, rows []types.Row, columnGenerators ColumnGeneratorMap) ([]types.Row, error) {
+func ProcessRowsWithGenerators(rows []types.Row, columnGenerators ColumnGeneratorMap) ([]types.Row, error) {
 	var processedRows []types.Row
 
 	for _, row := range rows {
 		for _, generator := range columnGenerators {
-			newFields, err := generator.Generate(row, columnNames)
+			newFields, err := generator.Generate(row)
 			if err != nil {
 				return nil, err
 			}
